@@ -1,5 +1,6 @@
 # These settings are specific to running under the Android emulator
 /dev/bcm2079x             0660   nfc        nfc
+/dev/bcm2079x_hci         0660   nfc        nfc
 /dev/qemu_trace           0666   system     system
 /dev/qemu_pipe            0666   system     system
 /dev/ttyS*                0666   system     system
