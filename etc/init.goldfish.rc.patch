@@ -1,5 +1,5 @@
 diff --git a/rootdir/etc/init.goldfish.rc b/rootdir/etc/init.goldfish.rc
-index 83b7f8a..656ccb1 100644
+index 83b7f8a..734b2e9 100644
 --- a/rootdir/etc/init.goldfish.rc
 +++ b/rootdir/etc/init.goldfish.rc
 @@ -1,3 +1,7 @@
@@ -23,7 +23,7 @@ index 83b7f8a..656ccb1 100644
  # fake some battery state
      setprop status.battery.state Slow
      setprop status.battery.level 5
-@@ -30,6 +40,68 @@ on boot
+@@ -30,6 +40,71 @@ on boot
  
      setprop ro.setupwizard.mode EMULATOR
  
@@ -47,13 +47,16 @@ index 83b7f8a..656ccb1 100644
 +    mkdir /data/misc/streaming/logs 0770
 +    mkdir /data/misc/streaming/media 0770
 +
-+service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant -Dtest -iwlan0 -c/data/misc/wifi/wpa_supplicant_test.conf -ddd
++service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant -e/data/misc/wifi/entropy.bin -Dtest -iwlan0 -c/data/misc/wifi/wpa_supplicant_test.conf -ddd
 +    class late_start
 +    user root
 +    group wifi inet
 +    socket wpa_wlan0 dgram 660 wifi wifi
 +    disabled
 +    oneshot
++
++on property:init.svc.wpa_supplicant=running
++    chown wifi system /data/misc/wifi/entropy.bin
 +
 +service dhcpcd_eth1 /system/bin/dhcpcd -ABKLG
 +    class late_start
@@ -92,7 +95,7 @@ index 83b7f8a..656ccb1 100644
  # enable Google-specific location features,
  # like NetworkLocationProvider and LocationCollector
      setprop ro.com.google.locationfeatures 1
-@@ -76,3 +148,10 @@ service qemud /system/bin/qemud
+@@ -76,3 +151,10 @@ service qemud /system/bin/qemud
  
  service goldfish-logcat /system/bin/logcat -Q
      oneshot
