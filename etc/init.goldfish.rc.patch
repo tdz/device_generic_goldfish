@@ -1,8 +1,8 @@
 diff --git a/rootdir/etc/init.goldfish.rc b/rootdir/etc/init.goldfish.rc
-index 83b7f8a..ba7753d 100644
+index 83b7f8a..656ccb1 100644
 --- a/rootdir/etc/init.goldfish.rc
 +++ b/rootdir/etc/init.goldfish.rc
-@@ -1,23 +1,33 @@
+@@ -1,3 +1,7 @@
 +#----------------------------------------------------------
 +# init.goldfish.rc.patch-applied
 +#----------------------------------------------------------
@@ -10,15 +10,7 @@ index 83b7f8a..ba7753d 100644
  on early-init
      export EXTERNAL_STORAGE /mnt/sdcard
      mkdir /mnt/sdcard 0000 system system
-     # for backwards compatibility
-     symlink /mnt/sdcard /sdcard
- 
- on boot
-     setprop ARGH ARGH
-     setprop net.eth0.gw 10.0.2.2
-     setprop net.eth0.dns1 10.0.2.3
-     setprop net.gprs.local-ip 10.0.2.15
-     setprop ro.radio.use-ppp no
+@@ -13,6 +17,12 @@ on boot
      setprop ro.build.product generic
      setprop ro.product.device generic
  
@@ -31,17 +23,7 @@ index 83b7f8a..ba7753d 100644
  # fake some battery state
      setprop status.battery.state Slow
      setprop status.battery.level 5
-     setprop status.battery.level_raw  50
-     setprop status.battery.level_scale 9
- 
- # disable some daemons the emulator doesn't want
-     stop dund
-@@ -25,16 +35,78 @@ on boot
- 
- # start essential services
-     start qemud
-     start goldfish-logcat
-     start goldfish-setup
+@@ -30,6 +40,68 @@ on boot
  
      setprop ro.setupwizard.mode EMULATOR
  
@@ -93,7 +75,7 @@ index 83b7f8a..ba7753d 100644
 +    class late_start
 +    user root
 +    group wifi net
-+    oneshot 
++    oneshot
 +
 +# Darwin Streaming Server.
 +service dss /system/bin/DarwinStreamingServer -d
@@ -110,17 +92,7 @@ index 83b7f8a..ba7753d 100644
  # enable Google-specific location features,
  # like NetworkLocationProvider and LocationCollector
      setprop ro.com.google.locationfeatures 1
- 
- # For the emulator, which bypasses Setup Wizard, you can specify
- # account info for the device via these two properties.  Google
- # Login Service will insert these accounts into the database when
- # it is created (ie, after a data wipe).
-@@ -71,8 +143,15 @@ service qemud /system/bin/qemud
- # -Q is a special logcat option that forces the
- # program to check wether it runs on the emulator
- # if it does, it redirects its output to the device
- # named by the androidboot.console kernel option
- # if not, is simply exits immediately
+@@ -76,3 +148,10 @@ service qemud /system/bin/qemud
  
  service goldfish-logcat /system/bin/logcat -Q
      oneshot
